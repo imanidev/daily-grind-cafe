@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Coffee, Code, Zap, Leaf } from 'lucide-react';
 import type { BrewingStep } from '../types';
 
@@ -25,15 +25,15 @@ const brewingSteps: BrewingStep[] = [
   }
 ];
 
-const BrewingProcess: React.FC = () => {
+const BrewingProcess: React.FC = memo(() => {
   return (
     <section className="bg-gray-800/30 border-y border-emerald-500/20 py-20">
       <div className="max-w-7xl mx-auto px-4">
         <div className="text-center mb-16">
-          <h3 className="text-4xl font-bold mb-4 font-mono text-emerald-400">
+          <h3 className="text-3xl sm:text-4xl font-bold mb-4 font-mono text-emerald-400">
             This Is How We Brew It
           </h3>
-          <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+          <p className="text-lg sm:text-xl text-gray-300 max-w-2xl mx-auto">
             From bean to bag, every step is optimized for quality. Think of it as our CI/CD pipeline—but for coffee.
           </p>
         </div>
@@ -65,15 +65,17 @@ const BrewingProcess: React.FC = () => {
           })}
         </div>
 
-        <div className="mt-16 bg-gradient-to-r from-emerald-500/10 to-cyan-500/10 border border-emerald-500/30 rounded-lg p-8 text-center">
-          <h4 className="text-2xl font-bold mb-3 text-white">The Result?</h4>
-          <p className="text-gray-300 text-lg max-w-3xl mx-auto">
+        <div className="mt-16 bg-linear-to-r from-emerald-500/10 to-cyan-500/10 border border-emerald-500/30 rounded-lg p-6 sm:p-8 text-center">
+          <h4 className="text-xl sm:text-2xl font-bold mb-3 text-white">The Result?</h4>
+          <p className="text-gray-300 text-base sm:text-lg max-w-3xl mx-auto">
             Coffee that's as meticulously crafted as your code. Every bag is traceable, sustainable, and guaranteed to keep you in flow state. We're not just selling coffee—we're shipping excellence.
           </p>
         </div>
       </div>
     </section>
   );
-};
+});
+
+BrewingProcess.displayName = 'BrewingProcess';
 
 export default BrewingProcess;
