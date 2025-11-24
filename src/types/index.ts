@@ -17,3 +17,8 @@ export interface BrewingStep {
   description: string;
   icon: React.ComponentType<{ className?: string }>;
 }
+
+export interface ChatMessage {
+  role: 'user' | 'assistant';
+  content: string;
+}

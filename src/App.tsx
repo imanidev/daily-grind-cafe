@@ -5,12 +5,15 @@ import ProductCard from './components/ProductCard';
 import BrewingProcess from './components/BrewingProcess';
 import Cart from './components/Cart';
 import Footer from './components/Footer';
+import AICoffeeAssistant from './components/AICoffeeAssistant';
+import AuthModal from './components/AuthModal';
 import { products } from './data/products';
 import type { Product, CartItem } from './types';
 
 function App() {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [cartOpen, setCartOpen] = useState(false);
+  const [authOpen, setAuthOpen] = useState(false);
 
   const addToCart = useCallback((product: Product) => {
     setCart(prevCart => {
@@ -39,6 +42,8 @@ function App() {
 
   const handleCartOpen = useCallback(() => setCartOpen(true), []);
   const handleCartClose = useCallback(() => setCartOpen(false), []);
+  const handleAuthOpen = useCallback(() => setAuthOpen(true), []);
+  const handleAuthClose = useCallback(() => setAuthOpen(false), []);
 
   const cartCount = useMemo(() =>
     cart.reduce((sum, item) => sum + item.quantity, 0),
@@ -47,7 +52,7 @@ function App() {
 
   return (
     <div className="min-h-screen bg-linear-to-b from-gray-900 via-gray-800 to-gray-900 text-gray-100">
-      <Header cartCount={cartCount} onCartClick={handleCartOpen} />
+      <Header cartCount={cartCount} onCartClick={handleCartOpen} onAuthClick={handleAuthOpen} />
       <Hero />
 
       <section className="max-w-7xl mx-auto px-4 py-20">
@@ -75,6 +80,10 @@ function App() {
         onClose={handleCartClose}
         onUpdateQuantity={updateQuantity}
       />
+
+      <AuthModal isOpen={authOpen} onClose={handleAuthClose} />
+
+      <AICoffeeAssistant onAddToCart={addToCart} />
     </div>
   );
 }
