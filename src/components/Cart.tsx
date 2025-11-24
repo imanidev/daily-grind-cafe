@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { X, Plus, Minus, ShoppingCart } from 'lucide-react';
 import type { CartItem } from '../types';
 
@@ -9,7 +9,7 @@ interface CartProps {
   onUpdateQuantity: (id: number, delta: number) => void;
 }
 
-const Cart: React.FC<CartProps> = ({ isOpen, cart, onClose, onUpdateQuantity }) => {
+const Cart: React.FC<CartProps> = memo(({ isOpen, cart, onClose, onUpdateQuantity }) => {
   const cartTotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
   if (!isOpen) return null;
@@ -38,7 +38,7 @@ const Cart: React.FC<CartProps> = ({ isOpen, cart, onClose, onUpdateQuantity }) 
                 {cart.map(item => (
                   <div key={item.id} className="bg-gray-800 rounded-lg p-4 border border-gray-700">
                     <div className="flex gap-4">
-                      <img src={item.image} alt={item.name} className="w-20 h-20 object-cover rounded" />
+                      <img src={item.image} alt={item.name} loading="lazy" className="w-20 h-20 object-cover rounded" />
                       <div className="flex-1">
                         <h4 className="font-bold font-mono text-white">{item.name}</h4>
                         <p className="text-sm text-gray-400">${item.price}</p>
@@ -86,6 +86,8 @@ const Cart: React.FC<CartProps> = ({ isOpen, cart, onClose, onUpdateQuantity }) 
       </div>
     </div>
   );
-};
+});
+
+Cart.displayName = 'Cart';
 
 export default Cart;

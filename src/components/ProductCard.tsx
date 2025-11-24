@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import type { Product } from '../types';
 
 interface ProductCardProps {
@@ -6,13 +6,14 @@ interface ProductCardProps {
   onAddToCart: (product: Product) => void;
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
+const ProductCard: React.FC<ProductCardProps> = memo(({ product, onAddToCart }) => {
   return (
     <div className="bg-gray-800/50 border border-gray-700 rounded-lg overflow-hidden hover:border-emerald-500/50 transition-all group">
       <div className="relative overflow-hidden">
         <img
           src={product.image}
           alt={product.name}
+          loading="lazy"
           className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
         />
         <div className="absolute top-3 right-3 bg-gray-900/90 px-2 py-1 rounded text-xs font-mono text-emerald-400">
@@ -43,6 +44,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
       </div>
     </div>
   );
-};
+});
+
+ProductCard.displayName = 'ProductCard';
 
 export default ProductCard;

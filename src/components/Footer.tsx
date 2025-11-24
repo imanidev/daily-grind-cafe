@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Coffee } from 'lucide-react';
 
-const Footer: React.FC = () => {
+const Footer: React.FC = memo(() => {
   return (
     <footer className="bg-gray-900 border-t border-gray-800 py-12">
       <div className="max-w-7xl mx-auto px-4 text-center">
@@ -12,6 +12,8 @@ const Footer: React.FC = () => {
       </div>
     </footer>
   );
-};
+});
+
+Footer.displayName = 'Footer';
 
 export default Footer;
