@@ -77,11 +77,11 @@ Remember: You're not just recommending coffee - you're a real barista having a r
       return;
     }
 
-    // Check conversation length and warn user
-    if (messages.length >= 40) {
+    // Check conversation length and warn user (approaching the 20 message limit)
+    if (messages.length >= 16) {
       const warningMessage: ChatMessage = {
         role: 'assistant',
-        content: "Hey! We've been chatting for a while. 😊 To keep costs down, consider starting a fresh conversation soon. Just refresh the chat if you want to start over!"
+        content: "Hey! We're approaching the chat limit (max 10 exchanges). 😊 Start a fresh conversation if you need more help!"
       };
       setMessages(prev => [...prev, warningMessage]);
     }
@@ -126,7 +126,7 @@ Remember: You're not just recommending coffee - you're a real barista having a r
           setRateLimitError(true);
           const errorMessage: ChatMessage = {
             role: 'assistant',
-            content: "Whoa! ⏸️ I'm getting too many questions right now. Take a coffee break and try again in a minute! In the meantime, feel free to browse our collection. 😊"
+            content: "Whoa! ⏸️ You've hit the chat limit (5/min or 20/day). Take a coffee break and try again later! In the meantime, feel free to browse our collection. 😊"
           };
           setMessages(prev => [...prev, errorMessage]);
           return;
@@ -310,11 +310,12 @@ Remember: You're not just recommending coffee - you're a real barista having a r
               <input
                 type="text"
                 value={input}
-                onChange={(e) => setInput(e.target.value)}
+                onChange={(e) => setInput(e.target.value.slice(0, 500))}
                 onKeyPress={handleKeyPress}
                 placeholder="Ask Bailey anything about coffee..."
                 className="flex-1 bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-sm text-gray-100 placeholder-gray-500 focus:outline-none focus:border-emerald-500 transition-colors disabled:opacity-50"
                 disabled={isLoading || rateLimitError}
+                maxLength={500}
               />
               <button
                 onClick={handleSend}
@@ -326,7 +327,7 @@ Remember: You're not just recommending coffee - you're a real barista having a r
               </button>
             </div>
             <p className="text-xs text-gray-500 mt-2 text-center font-mono">
-              {isLoading ? 'Bailey is brewing a response...' : 'Powered by AI • Press Enter to send'}
+              {isLoading ? 'Bailey is brewing a response...' : `${input.length}/500 • Press Enter to send`}
             </p>
           </div>
         </div>

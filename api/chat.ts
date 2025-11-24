@@ -11,7 +11,7 @@ interface ChatRequest {
 }
 
 // Simple in-memory rate limiting (resets on deploy/restart)
-const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
+const rateLimitMap = new Map<string, { count: number; resetTime: number; dailyCount: number; dailyResetTime: number }>();
 
 function getRateLimitKey(req: Request): string {
   // Use IP address or fallback to a header
@@ -20,21 +20,43 @@ function getRateLimitKey(req: Request): string {
   return ip;
 }
 
-function checkRateLimit(key: string, maxRequests = 8, windowMs = 60000): boolean {
+function checkRateLimit(key: string, maxRequests = 5, windowMs = 60000, maxDailyRequests = 20): boolean {
   const now = Date.now();
   const record = rateLimitMap.get(key);
 
-  if (!record || now > record.resetTime) {
-    // New window
-    rateLimitMap.set(key, { count: 1, resetTime: now + windowMs });
+  // Initialize or reset counters
+  if (!record) {
+    rateLimitMap.set(key, {
+      count: 1,
+      resetTime: now + windowMs,
+      dailyCount: 1,
+      dailyResetTime: now + 86400000 // 24 hours
+    });
+    return true;
+  }
+
+  // Check daily limit
+  if (now > record.dailyResetTime) {
+    record.dailyCount = 1;
+    record.dailyResetTime = now + 86400000;
+  } else if (record.dailyCount >= maxDailyRequests) {
+    return false; // Daily limit exceeded
+  }
+
+  // Check per-minute limit
+  if (now > record.resetTime) {
+    record.count = 1;
+    record.resetTime = now + windowMs;
+    record.dailyCount++;
     return true;
   }
 
   if (record.count >= maxRequests) {
-    return false;
+    return false; // Per-minute limit exceeded
   }
 
   record.count++;
+  record.dailyCount++;
   return true;
 }
 
@@ -52,7 +74,7 @@ export default async function handler(req: Request) {
   if (!checkRateLimit(rateLimitKey)) {
     return new Response(JSON.stringify({
       error: 'Rate limit exceeded',
-      message: 'Too many requests. Please try again in a minute.'
+      message: 'You\'ve reached your chat limit. Please try again later. (Limit: 5 per minute, 20 per day)'
     }), {
       status: 429,
       headers: { 'Content-Type': 'application/json' }
@@ -71,11 +93,11 @@ export default async function handler(req: Request) {
       });
     }
 
-    // Limit conversation length
-    if (messages.length > 50) {
+    // Limit conversation length (20 messages = ~10 back-and-forth exchanges)
+    if (messages.length > 20) {
       return new Response(JSON.stringify({
         error: 'Conversation too long',
-        message: 'Please start a new conversation.'
+        message: 'Please start a new conversation. (Max 10 exchanges)'
       }), {
         status: 400,
         headers: { 'Content-Type': 'application/json' }
@@ -84,10 +106,10 @@ export default async function handler(req: Request) {
 
     // Validate message content length
     for (const msg of messages) {
-      if (msg.content.length > 2000) {
+      if (msg.content.length > 500) {
         return new Response(JSON.stringify({
           error: 'Message too long',
-          message: 'Please keep messages under 2000 characters.'
+          message: 'Please keep messages under 500 characters.'
         }), {
           status: 400,
           headers: { 'Content-Type': 'application/json' }
@@ -110,10 +132,10 @@ export default async function handler(req: Request) {
       apiKey: apiKey,
     });
 
-    // Call Claude API
+    // Call Claude API with cost-conscious settings
     const response = await client.messages.create({
       model: 'claude-sonnet-4-5-20250929',
-      max_tokens: 1024,
+      max_tokens: 400, // Shorter responses = lower cost
       system: systemPrompt,
       messages: messages,
     });
