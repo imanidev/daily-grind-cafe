@@ -27,8 +27,8 @@ Built with modern tools for modern developers:
 - **Tailwind CSS v4** - Styling at the speed of thought
 - **Vite** - Lightning-fast dev server and builds
 - **Lucide Icons** - Clean, consistent iconography
-- **Supabase** - Authentication and database (free tier!)
-- **Anthropic Claude** - AI-powered recommendations
+- **Supabase** - Authentication and database
+- **Anthropic Claude** - AI-powered coffee recommendations
 
 ## Getting Started
 
@@ -112,8 +112,8 @@ This project is open source and available under the [MIT License](LICENSE).
 ## Acknowledgments
 
 - Built for makers, by makers
-- Powered by caffeine and clean code
-- Shipped with ❤️
+- Powered by caffeine and code
+- Shipped with ❤️ 
 
 ---
 
