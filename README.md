@@ -10,6 +10,8 @@ We're not just selling coffee. We're shipping excellence, one bag at a time.
 
 ## Features
 
+- **Bailey the Barista** 🤖☕ - AI-powered coffee concierge that gives personalized recommendations based on your work habits and preferences (our killer feature!)
+- **Full Authentication** 🔐 - Sign up, sign in, and manage your account with Supabase (production-ready!)
 - **`<Grind />` Your Way** - Browse our curated collection of developer-themed blends
 - **Add to Cart** - Simple, fast checkout flow (because waiting is for production builds)
 - **Responsive Design** - Looks great on everything from mobile to ultrawide monitors
@@ -25,6 +27,8 @@ Built with modern tools for modern developers:
 - **Tailwind CSS v4** - Styling at the speed of thought
 - **Vite** - Lightning-fast dev server and builds
 - **Lucide Icons** - Clean, consistent iconography
+- **Supabase** - Authentication and database (free tier!)
+- **Anthropic Claude** - AI-powered recommendations
 
 ## Getting Started
 
@@ -45,11 +49,21 @@ cd daily-grind-cafe
 # Install dependencies
 npm install
 
+# Set up environment variables
+cp .env.example .env
+# Add your API keys to .env:
+# - ANTHROPIC_API_KEY (for Bailey the Barista)
+# - VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY (for authentication)
+
 # Start the dev server
 npm run dev
 ```
 
 Your app will be live at `http://localhost:5173` ⚡
+
+**Setup Guides:**
+- **Bailey the Barista (AI)**: See [README-BAILEY.md](./README-BAILEY.md)
+- **Authentication**: See [README-AUTH.md](./README-AUTH.md)
 
 ### Build for Production
 
