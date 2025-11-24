@@ -189,30 +189,34 @@ Remember: You're not just recommending coffee - you're a real barista having a r
     <>
       {/* Floating Chat Button */}
       {!isOpen && (
-        <button
-          onClick={() => setIsOpen(true)}
-          className="fixed bottom-6 right-6 bg-emerald-500 hover:bg-emerald-600 text-gray-900 p-4 rounded-full shadow-2xl transition-all hover:scale-110 z-50 group"
-          aria-label="Chat with Bailey the Barista"
-        >
-          {/* Coffee cup with smiley face */}
-          <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            {/* Cup */}
-            <path d="M17 8h1a4 4 0 1 1 0 8h-1" />
-            <path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V8z" />
-            {/* Smiley face */}
-            <circle cx="8" cy="12" r="0.5" fill="currentColor" />
-            <circle cx="12" cy="12" r="0.5" fill="currentColor" />
-            <path d="M8 14.5c.5.5 1.5.5 2 .5s1.5 0 2-.5" strokeWidth="1.5" />
-          </svg>
-          <div className="absolute -top-2 -right-2 bg-white text-gray-900 px-2 py-0.5 rounded-full text-xs font-bold shadow-lg">
-            Bailey
+        <div className="fixed bottom-6 right-6 z-50">
+          {/* Speech Bubble */}
+          <div className="absolute bottom-full right-0 mb-4 bg-gray-900 border-2 border-emerald-500/50 text-emerald-400 px-4 py-2 rounded-2xl rounded-br-sm shadow-xl whitespace-nowrap">
+            <p className="text-sm font-medium">Hi, I'm Bailey! ☕</p>
           </div>
-        </button>
+
+          <button
+            onClick={() => setIsOpen(true)}
+            className="bg-emerald-500 hover:bg-emerald-600 text-gray-900 w-20 h-20 rounded-full shadow-2xl transition-all hover:scale-110 group flex items-center justify-center"
+            aria-label="Chat with Bailey the Barista"
+          >
+            {/* Coffee cup with smiley face - centered */}
+            <svg className="w-14 h-14 -mt-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              {/* Cup */}
+              <path d="M17 8h1a4 4 0 1 1 0 8h-1" />
+              <path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V8z" />
+              {/* Smiley face */}
+              <circle cx="8" cy="12" r="0.5" fill="currentColor" />
+              <circle cx="12" cy="12" r="0.5" fill="currentColor" />
+              <path d="M8 14.5c.5.5 1.5.5 2 .5s1.5 0 2-.5" strokeWidth="1.5" />
+            </svg>
+          </button>
+        </div>
       )}
 
       {/* Chat Modal */}
       {isOpen && (
-        <div className="fixed bottom-0 right-0 sm:bottom-6 sm:right-6 w-full sm:max-w-md h-[100dvh] sm:h-[600px] bg-gray-900 border-2 border-emerald-500/50 sm:rounded-2xl shadow-2xl z-50 flex flex-col overflow-hidden">
+        <div className="fixed bottom-0 right-0 sm:bottom-6 sm:right-6 w-full sm:max-w-md h-dvh sm:h-[600px] bg-gray-900 border-2 border-emerald-500/50 sm:rounded-2xl shadow-2xl z-50 flex flex-col overflow-hidden">
           {/* Header */}
           <div className="bg-linear-to-r from-emerald-500/20 to-cyan-500/20 border-b border-emerald-500/30 p-4 flex items-center justify-between">
             <div className="flex items-center gap-3">
